@@ -1,12 +1,11 @@
 var { ipcMain } = require('electron');
 var fs = require('fs');
+var path=require('path');
 var fu = require('./js/fileutils')
 let bip32 = require('bip32');
-let addrCount=0;
+let addrCount = 0;
 
-//异步创建文件夹
-let fp = __dirname + '/data/account/';
-fu.dirExists(fp);
+let fp=path.join(__dirname,'../data/account/');
 
 ipcMain.on('create', function (event, data) {
     let Buffer = require('safe-buffer').Buffer;
@@ -14,7 +13,6 @@ ipcMain.on('create', function (event, data) {
     let pwd = '123456';
     let ss = '';
     addrCount++;
-
 
     let bip = bip32.fromSeed(Buffer.from('TianMiYu:' + _haveSendPhone + ':' + pwd));
     let d = bip.publicKey.toJSON().data;
@@ -28,14 +26,17 @@ ipcMain.on('create', function (event, data) {
     }
     var data = { pub_key: ss, prv_key: null };
     var dataString = JSON.stringify(data);
-    fs.writeFile(fp + 'addr_'+addrCount+'.cfg', dataString, (err) => {
+    console.log(dataString);
+    //同步创建文件夹
+    fu.mkdirsSync(fp);
+    fs.writeFile(fp + 'addr_' + addrCount + '.cfg', dataString, (err) => {
         if (err) {
             console.log(err);
             return
         }
     })
-    console.log('addr_'+addrCount+'.cfg 写入文件成功');
-    event.sender.send('write_sccuess', 'addr_'+addrCount+'.cfg 写入文件成功');
+    console.log('addr_' + addrCount + '.cfg 写入文件成功');
+    event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg 写入文件成功');
 })
 
 ipcMain.on('read', function (event, d) {

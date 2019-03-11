@@ -1,64 +1,38 @@
-var fs = require('fs');
-var path = require('path');
-/**
- * 读取路径信息
- * @param {string} path 路径
- */
-function getStat(path) {
-    return new Promise((resolve, reject) => {
-        fs.stat(path, (err, stats) => {
-            if (err) {
-                resolve(false);
-            } else {
-                resolve(stats);
-            }
-        })
-    })
-}
-
-/**
- * 创建路径
- * @param {string} dir 路径
- */
-function mkdir(dir) {
-    return new Promise((resolve, reject) => {
-        fs.mkdir(dir, err => {
-            if (err) {
-                resolve(false);
-            } else {
-                resolve(true);
-            }
-        })
-    })
-}
-
-/**
- * 路径是否存在，不存在则创建
- * @param {string} dir 路径
- * async
- */
-async function dirExists(dir) {
-    let isExists = await getStat(dir);
-    //如果该路径且不是文件，返回true
-    if (isExists && isExists.isDirectory()) {
-        return true;
-    } else if (isExists) {     //如果该路径存在但是文件，返回false
-        return false;
-    }
-    //如果该路径不存在
-    let tempDir = path.parse(dir).dir;      //拿到上级路径
-    //递归判断，如果上级目录也不存在，则会代码会在此处继续循环执行，直到目录存在
-    let status = await dirExists(tempDir);
-    let mkdirStatus;
-    if (status) {
-        mkdirStatus = await mkdir(dir);
-    }
-    return mkdirStatus;
-}
-
-// exports={
-//     getStat,
-//     mkdir,
-//     dirExists
-// }
-exports.dirExists = dirExists;
+/** 
+ * Created by RockeyCai on 16/2/22. 
+ * 创建文件夹帮助类 
+ */  
+  
+var fs = require("fs");  
+var path = require("path");  
+  
+//递归创建目录 异步方法  
+function mkdirs(dirname, callback) {  
+    fs.exists(dirname, function (exists) {  
+        if (exists) {  
+            callback();  
+        } else {  
+            //console.log(path.dirname(dirname));  
+            mkdirs(path.dirname(dirname), function () {  
+                fs.mkdir(dirname, callback);  
+            });  
+        }  
+    });  
+}  
+  
+//递归创建目录 同步方法  
+function mkdirsSync(dirname) {  
+    //console.log(dirname);  
+    if (fs.existsSync(dirname)) {  
+        return true;  
+    } else {  
+        if (mkdirsSync(path.dirname(dirname))) {  
+            fs.mkdirSync(dirname);  
+            return true;  
+        }  
+    }  
+}  
+  
+module.exports.mkdirs = mkdirs;  
+  
+module.exports.mkdirsSync= mkdirsSync;  
