@@ -4,43 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <title>Electron_01</title>
+    <link rel="stylesheet" href="./bootstrap4/css/bootstrap.min.css">
 </head>
 
 <body>
-    <button id="create">创建钱包</button>
-    <!-- <button id="read">读取配置文件</button>
-    <br>
-    <button id='btnOpen1'>打开百度</button>
-    <button id='btnOpen2'>打开其他</button> -->
+    <div class="container-fluid">
+        <button id="create" type="button" class="btn btn-primary">创建钱包</button>
+        <button id="open" type="button" class="btn btn-primary">打开钱包</button>
+    </div>
 </body>
 <script src="./rendered.js"></script>
-
-<script>
-    const electron = require('electron');
-    let browserWindow = electron.remote.BrowserWindow;
-    console.log(browserWindow);
-    let baiduWin = null;
-    // btnOpen1.onclick = function () {
-    //     baiduWin = new browserWindow({
-    //         width: 1000,
-    //         height: 800
-    //     })
-    //     baiduWin.loadURL('http://www.baidu.com')
-    //     baiduWin.on('close', () => {
-    //         baiduWin = null;
-    //     })
-    // }
-    // btnOpen2.onclick = function () {
-    //     baiduWin = new browserWindow({
-    //         width: 1000,
-    //         height: 800
-    //     })
-    //     baiduWin.loadURL('https://elemefe.github.io/element-react/#/zh-CN/quick-start')
-    //     baiduWin.on('close', () => {
-    //         baiduWin = null;
-    //     })
-    // }
-</script>
-
-
 </html>
