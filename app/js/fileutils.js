@@ -34,16 +34,18 @@ function mkdirsSync(dirname) {
 }
 
 //遍历文件夹
+
 function readDirSync(filepath){
-    var num=0;
+    // var num=0;
+    var files=[];
     var pa=fs.readdirSync(filepath);
     pa.forEach(function(ele,index){
-        var info=fs.statSync(filepath+"/"+ele);
+        var info=fs.statSync(filepath+ele);
         if(info.isFile){
-            num++;
+            files.push(filepath+ele);
         }
     })
-    return num;
+    return files;
 }
 
 //遍历文件夹-递归
@@ -63,8 +65,6 @@ function getFilesCount(filepath) {
                         var isDir = stats.isDirectory();
                         if (isFile) {
                             fileCount++;
-                            console.log(filedir);
-                            console.log(fileCount);
                         }
                         if (isDir) {
                             getAllFiles(filedir);

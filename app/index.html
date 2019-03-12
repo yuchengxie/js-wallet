@@ -4,21 +4,78 @@
 <head>
     <meta charset="utf-8" />
     <title>Electron_01</title>
-
-    <link rel="stylesheet" href="./bootstrap4/css/bootstrap.min.css">
-    <script src="./bootstrap4/js/jQuery.js"></script>
-    <script src="./bootstrap4/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <button id="create" type="button" class="btn btn-primary">创建钱包</button>
-        <button id="open" type="button" class="btn btn-primary">打开钱包</button>
+        <button id="open" type="button" class="btn btn-primary">钱包目录</button>
 
-        
-
+        <div class="dropdown">
+            <button class="dropbtn" id='btnSelect'>选择文件</button>
+            <ul id="ul_files">
+                <li onclick="selectFile(this)">文件1</li>
+                <li onclick="selectFile(this)">文件2</li>
+                <li onclick="selectFile(this)">文件3</li>
+                <li onclick="selectFile(this)">文件4</li>
+                <!-- <li onclick="selectFile(this)">文件2</li>
+                <li onclick="selectFile(this)">文件3</li> -->
+            </ul>
+        </div>
+        <span>password</span>
     </div>
+
+
 </body>
-<script src="./rendered.js"></script>s
+<script src="./rendered.js"></script>
+<script>
+    function selectFile(e){
+        alert(e.innerText);
+    }
+</script>
 
 </html>
+
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    button {
+        width: 100px;
+        height: 40px;
+        border: none;
+        outline: none;
+        background: lightblue;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .dropdown {
+        margin-top: 20px;
+    }
+
+    .dropbtn:hover {
+        background: orange;
+    }
+
+    #ul_files {
+        display: none;
+        text-align: center;
+        width: 100px;
+        height: auto;
+    }
+
+    #ul_files li {
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        list-style: none;
+        background: #eee;
+    }
+
+    #ul_files li:hover {
+        background: orange;
+    }
+</style>

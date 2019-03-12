@@ -2,27 +2,38 @@ let { ipcMain, dialog } = require('electron');
 let fs = require('fs');
 let path = require('path');
 let fu = require('./js/fileutils')
-let gdata=require('./js/gdata')
+let gdata = require('./js/gdata')
 let bip32 = require('bip32');
 
 let fp = path.join(__dirname, '../data/account/');
-let default_path=path.join(__dirname,'../data/')
+let default_path = path.join(__dirname, '../data/')
 //同步创建文件夹
 fu.mkdirsSync(fp);
-let addrCount = fu.readDirSync(fp);
+let files_wallet = fu.readDirSync(fp);
+console.log(files_wallet);
+let addrCount = files_wallet.length;
+
+ipcMain.on('load_wallet', function (event, d) {
+
+    console.log('load wallet ...');
+    // fs.readFile('config.json', 'utf-8', function (err, data) {
+    //     console.log(data);
+    event.sender.send('reply_load_wallet', files_wallet);
+    // })
+})
 
 ipcMain.on('open', function (event, data) {
     dialog.showOpenDialog({
         properties: ['openfile', 'openDirectory'],
-        defaultPath:fp
+        defaultPath: fp
     }, function (files) {
         // if (files) event.sender.send('selected-directory', files)
-        console.log('files:\n'+files);
+        console.log('selected file:\n' + files);
     })
 })
 
 ipcMain.on('create', function (event, data) {
-    var dataString=generateData();
+    var dataString = generateData();
     console.log(dataString);
     //用户文件夹
     fs.writeFile(fp + 'addr_' + addrCount + '.cfg', dataString, (err) => {
@@ -43,10 +54,9 @@ ipcMain.on('create', function (event, data) {
     event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg 写入文件成功');
 })
 
-function generateData(){
+function generateData() {
     let Buffer = require('safe-buffer').Buffer;
     let _haveSendPhone = gdata.MathRand(11);
-    // let pwd = '123456';
     let pwd = gdata.MathRand(6);
     let ss = '';
     addrCount++;
