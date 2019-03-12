@@ -8,10 +8,10 @@ let bip32 = require('bip32');
 let fp = path.join(__dirname, '../data/account/');
 let default_path = path.join(__dirname, '../data/')
 //同步创建文件夹
-// fu.mkdirsSync(fp);
-// let files_wallet = fu.readDirSync(fp);
-// let addrCount = files_wallet.length;
-// console.log('初始化:' + files_wallet, '\n长度:', addrCount);
+fu.mkdirsSync(fp);
+let files_wallet = fu.readDirSync(fp);
+let addrCount = files_wallet.length;
+console.log('初始化:' + files_wallet, '\n长度:', addrCount);
 
 ipcMain.on('load_wallet', function (event, d) {
     // if (fu.mkdirsSync(fp) === 1) {
@@ -26,7 +26,6 @@ ipcMain.on('load_wallet', function (event, d) {
     fu.mkdirsSync(fp)
     files_wallet = fu.readDirSync(fp);
     event.sender.send('reply_load_wallet', files_wallet);
-    console.log('重新加载 addrCount:', addrCount);
 })
 
 ipcMain.on('open', function (event, data) {

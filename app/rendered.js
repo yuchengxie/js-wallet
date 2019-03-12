@@ -58,7 +58,7 @@ onload = function () {
             ul_files.appendChild(ele);
         });
     }
-
+    
     function add(newFilename){
         console.log('element:'+newFilename);
         let ele=document.createElement('li');
