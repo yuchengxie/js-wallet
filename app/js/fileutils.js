@@ -42,7 +42,7 @@ function readDirSync(filepath){
     pa.forEach(function(ele,index){
         var info=fs.statSync(filepath+ele);
         if(info.isFile){
-            files.push(filepath+ele);
+            files.push(ele);
         }
     })
     return files;

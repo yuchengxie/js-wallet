@@ -14,10 +14,6 @@ console.log(files_wallet);
 let addrCount = files_wallet.length;
 
 ipcMain.on('load_wallet', function (event, d) {
-
-    console.log('load wallet ...');
-    // fs.readFile('config.json', 'utf-8', function (err, data) {
-    //     console.log(data);
     event.sender.send('reply_load_wallet', files_wallet);
     // })
 })
@@ -75,6 +71,13 @@ function generateData() {
     var dataString = JSON.stringify(data);
     return dataString;
 }
+
+ipcMain.on('read_file', function (event, filename) {
+    fs.readFile(fp + filename, 'utf-8', function (err, data) {
+        if (err) throw err;
+        event.sender.send('reply_read_file', data);
+    })
+})
 
 ipcMain.on('read', function (event, d) {
     console.log(d);
