@@ -3,7 +3,6 @@ let btncreate = document.querySelector('#create');
 let btnopen = document.querySelector('#open');
 let { ipcRenderer } = require('electron')
 
-
 //读取本地钱包目录文件
 // let wallet_file = {};
 

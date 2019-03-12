@@ -1,5 +1,5 @@
 /** 
- * Created by RockeyCai on 16/2/22. 
+ * Created by xieyucheng on 19/3/12 
  * 创建文件夹帮助类 
  */
 
@@ -24,11 +24,11 @@ function mkdirs(dirname, callback) {
 function mkdirsSync(dirname) {
     //console.log(dirname);  
     if (fs.existsSync(dirname)) {
-        return true;
+        return 1;
     } else {
         if (mkdirsSync(path.dirname(dirname))) {
             fs.mkdirSync(dirname);
-            return true;
+            return 0;
         }
     }
 }
@@ -77,6 +77,4 @@ function getFilesCount(filepath) {
 
 module.exports.mkdirs = mkdirs;
 module.exports.mkdirsSync = mkdirsSync;
-// module.exports.getFilesCount = getFilesCount;
 module.exports.readDirSync=readDirSync;
-// readDirSync

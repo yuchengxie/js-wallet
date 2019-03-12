@@ -8,16 +8,25 @@ let bip32 = require('bip32');
 let fp = path.join(__dirname, '../data/account/');
 let default_path = path.join(__dirname, '../data/')
 //同步创建文件夹
-fu.mkdirsSync(fp);
-let files_wallet = fu.readDirSync(fp);
-console.log('初始化:' + files_wallet);
-let addrCount = files_wallet.length;
+// fu.mkdirsSync(fp);
+// let files_wallet = fu.readDirSync(fp);
+// let addrCount = files_wallet.length;
+// console.log('初始化:' + files_wallet, '\n长度:', addrCount);
 
 ipcMain.on('load_wallet', function (event, d) {
-    if(fu.mkdirsSync(fp)){
-        files_wallet = fu.readDirSync(fp);
-        event.sender.send('reply_load_wallet', files_wallet);
-    }
+    // if (fu.mkdirsSync(fp) === 1) {
+    //     files_wallet = fu.readDirSync(fp);
+    //     event.sender.send('reply_load_wallet', files_wallet);
+    // } else {
+    //     addrCount = 0;
+    //     files_wallet = [];
+    //     console.log('全部初始化');
+    //     event.sender.send('reply_load_wallet', []);
+    // }
+    fu.mkdirsSync(fp)
+    files_wallet = fu.readDirSync(fp);
+    event.sender.send('reply_load_wallet', files_wallet);
+    console.log('重新加载 addrCount:', addrCount);
 })
 
 ipcMain.on('open', function (event, data) {
@@ -42,7 +51,7 @@ ipcMain.on('create', function (event, data) {
         // event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg 写入文件成功');
         // files_wallet = fu.readDirSync(fp)
         // console.log('更新后的files_wallet:\n', files_wallet.length, '\n', files_wallet);
-        console.log('新增:'+'addr_' + addrCount + '.cfg');
+        console.log('新增:' + 'addr_' + addrCount + '.cfg');
         event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg');
     })
     //default文件夹
