@@ -28,7 +28,8 @@ function createWindow() {
 }
 
 // 当Electron完成初始化并且已经创建了浏览器窗口，则该方法将会被调用。
-// 有些API只能在该事件发生后才能被使用。
+app.commandLine.appendSwitch("--disable-http-cache");
+
 app.on('ready', createWindow);
 
 // 当所有的窗口被关闭后退出应用
