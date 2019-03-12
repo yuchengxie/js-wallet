@@ -5,11 +5,10 @@ let { ipcRenderer } = require('electron')
 
 
 //读取本地钱包目录文件
-let wallet_file = {};
+// let wallet_file = {};
 
 onload = function () {
     let btnSelect = document.getElementById('btnSelect');
-    let dropdown = document.getElementById('dropdown');
     let ul_files = document.getElementById('ul_files');
     let file_content=document.getElementById('file_content');
 
@@ -32,7 +31,22 @@ onload = function () {
 
     ipcRenderer.on('reply_load_wallet', function (event, data) {
         // 渲染文件列表
-        data.forEach(element => {
+        initUlNode(data);
+    })
+
+    ipcRenderer.on('reply_read_file',function(event,data){
+        file_content.innerText=data;
+    })
+
+    ipcRenderer.on('write_sccuess', function (event, data) {
+        // alert(data);
+        console.log('接收到file_wallet:\n',data.length,'\n',data);
+        add(data);
+        alert(data+'创建成功');
+    })
+
+    function initUlNode(data){
+         data.forEach(element => {
             //Todo 动态创建元素
             console.log('element:'+element);
             let ele=document.createElement('li');
@@ -44,15 +58,26 @@ onload = function () {
             });
             ul_files.appendChild(ele);
         });
-    })
+    }
 
-    ipcRenderer.on('reply_read_file',function(event,data){
-        file_content.innerText=data;
-    })
+    function add(newFilename){
+        console.log('element:'+newFilename);
+        let ele=document.createElement('li');
+        ele.innerText=newFilename;
+        ele.addEventListener('click',function(ele){
+            //读取文件，写到界面
+            ul_files.style.display='none';
+            ipcRenderer.send('read_file',newFilename);
+        });
+        ul_files.appendChild(ele);
+    }
 
-    ipcRenderer.on('write_sccuess', function (event, data) {
-        alert(data);
-    })
-
+    function remove(){
+        let childList=ul_files.childNodes;
+        console.log('要删除的元素childList length:'+childList.length);
+        for(var i=0;i<childList.length;i++){
+            ul_files.removeChild(childList[i]);
+        }
+    }
 }
 

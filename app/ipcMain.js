@@ -10,12 +10,14 @@ let default_path = path.join(__dirname, '../data/')
 //同步创建文件夹
 fu.mkdirsSync(fp);
 let files_wallet = fu.readDirSync(fp);
-console.log(files_wallet);
+console.log('初始化:' + files_wallet);
 let addrCount = files_wallet.length;
 
 ipcMain.on('load_wallet', function (event, d) {
-    event.sender.send('reply_load_wallet', files_wallet);
-    // })
+    if(fu.mkdirsSync(fp)){
+        files_wallet = fu.readDirSync(fp);
+        event.sender.send('reply_load_wallet', files_wallet);
+    }
 })
 
 ipcMain.on('open', function (event, data) {
@@ -24,7 +26,6 @@ ipcMain.on('open', function (event, data) {
         defaultPath: fp
     }, function (files) {
         // if (files) event.sender.send('selected-directory', files)
-        console.log('selected file:\n' + files);
     })
 })
 
@@ -37,6 +38,12 @@ ipcMain.on('create', function (event, data) {
             console.log(err);
             return
         }
+        console.log('addr_' + addrCount + '.cfg 写入文件成功');
+        // event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg 写入文件成功');
+        // files_wallet = fu.readDirSync(fp)
+        // console.log('更新后的files_wallet:\n', files_wallet.length, '\n', files_wallet);
+        console.log('新增:'+'addr_' + addrCount + '.cfg');
+        event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg');
     })
     //default文件夹
     fs.writeFile(default_path + 'default.cfg', dataString, (err) => {
@@ -45,9 +52,6 @@ ipcMain.on('create', function (event, data) {
             return
         }
     })
-
-    console.log('addr_' + addrCount + '.cfg 写入文件成功');
-    event.sender.send('write_sccuess', 'addr_' + addrCount + '.cfg 写入文件成功');
 })
 
 function generateData() {
@@ -80,7 +84,6 @@ ipcMain.on('read_file', function (event, filename) {
 })
 
 ipcMain.on('read', function (event, d) {
-    console.log(d);
     if (d === '2') {
         console.log('can read')
         fs.readFile('config.json', 'utf-8', function (err, data) {

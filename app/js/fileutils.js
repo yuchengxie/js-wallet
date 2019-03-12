@@ -36,7 +36,6 @@ function mkdirsSync(dirname) {
 //遍历文件夹
 
 function readDirSync(filepath){
-    // var num=0;
     var files=[];
     var pa=fs.readdirSync(filepath);
     pa.forEach(function(ele,index){
